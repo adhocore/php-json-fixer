@@ -169,7 +169,6 @@ class Fixer
         // Last one
         if (null === $token) {
             return \array_pop($this->stack);
-
         }
 
         $keys = \array_reverse(\array_keys($this->stack));
