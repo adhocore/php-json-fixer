@@ -64,7 +64,7 @@ class Fixer
         return $head . $this->doFix(\rtrim($json), $silent) . $tail;
     }
 
-    public function trim($json)
+    protected function trim($json)
     {
         \preg_match('/^(\s*)([^\s]+)(\s*)$/', $json, $match);
 
@@ -82,7 +82,7 @@ class Fixer
         return \JSON_ERROR_NONE === \json_last_error();
     }
 
-    public function quickFix($json)
+    protected function quickFix($json)
     {
         if (\strlen($json) === 1 && isset($this->pairs[$json])) {
             return $json . $this->pairs[$json];
