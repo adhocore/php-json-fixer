@@ -19,7 +19,7 @@ trait PadsJson
         if (!$this->inStr) {
             $tmpJson = \rtrim($tmpJson, ',');
             while ($this->lastToken() === ',') {
-                $this->popToken(',');
+                $this->popToken();
             }
         }
 
@@ -49,8 +49,6 @@ trait PadsJson
         foreach (\array_reverse($this->stack, true) as $index => $token) {
             if (isset($this->pairs[$token])) {
                 $tmpJson .= $this->pairs[$token];
-            } elseif (\in_array($token, [':', ','])) {
-                $tmpJson .= $this->padValue($tmpJson, $token, $index);
             }
         }
 
@@ -59,20 +57,22 @@ trait PadsJson
 
     protected function padObject($tmpJson)
     {
-        $empty = \substr($tmpJson, -1) == '{' && !$this->inStr;
-
-        if ($empty || $this->arrayPos > $this->objectPos) {
+        if (!$this->objectNeedsPadding($tmpJson)) {
             return $tmpJson;
         }
 
         $part = \substr($tmpJson, $this->objectPos + 1);
-
-        if (\preg_match('/(,)?(\"[^"]+\"(\s*:\s*)?[^,]*)+$/', $part, $matches)) {
+        if (\preg_match('/(\s*\"[^"]+\"\s*:\s*[^,]+,?)+$/', $part, $matches)) {
             return $tmpJson;
         }
 
-        $tmpJson .= $this->inStr ? '":' : ':';
-        $tmpJson .= $this->missingValue;
+        if ($this->inStr) {
+            $tmpJson .= '"';
+        }
+
+        $tmpJson = $this->padIf($tmpJson, ':');
+        $tmpJson = $tmpJson . $this->missingValue;
+
         if ($this->lastToken() === '"') {
             $this->popToken();
         }
@@ -80,13 +80,12 @@ trait PadsJson
         return $tmpJson;
     }
 
-    protected function padValue($tmpJson, $token, $index)
+    protected function objectNeedsPadding($tmpJson)
     {
-        if ($token === ':' && !$this->inStr && \substr($tmpJson, -1) === ':') {
-            return $this->missingValue;
-        }
+        $last  = \substr($tmpJson, -1);
+        $empty = $last === '{' && !$this->inStr;
 
-        return '';
+        return !$empty && $this->arrayPos < $this->objectPos;
     }
 
     protected function padString($string)
@@ -101,5 +100,14 @@ trait PadsJson
         // @codeCoverageIgnoreStart
         return null;
         // @codeCoverageIgnoreEnd
+    }
+
+    protected function padIf($string, $substr)
+    {
+        if (\substr($string, 0 - \strlen($substr)) !== $substr) {
+            return $string . $substr;
+        }
+
+        return $string;
     }
 }
