@@ -96,14 +96,7 @@ class Fixer
             return $this->maybeLiteral($json);
         }
 
-        $last  = \substr($json, -1);
-        $last2 = \substr($json, -2);
-
-        if ($last2 === '\"' || $last !== '"') {
-            return $json . '"';
-        }
-
-        return null;
+        return $this->padString($json);
     }
 
     protected function maybeLiteral($json)

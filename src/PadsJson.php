@@ -88,4 +88,16 @@ trait PadsJson
 
         return '';
     }
+
+    protected function padString($string)
+    {
+        $last  = \substr($string, -1);
+        $last2 = \substr($string, -2);
+
+        if ($last2 === '\"' || $last !== '"') {
+            return $string . '"';
+        }
+
+        return null;
+    }
 }
