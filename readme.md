@@ -1,6 +1,6 @@
 ## adhocore/json-fixer
 
-PHP library to fix Truncated JSON data.
+PHP library to fix Truncated JSON data by padding contextual counterpart to the end.
 
 [![Latest Version](https://img.shields.io/github/release/adhocore/php-json-fixer.svg?style=flat-square)](https://github.com/adhocore/php-json-fixer/releases)
 [![Travis Build](https://img.shields.io/travis/adhocore/php-json-fixer/master.svg?style=flat-square)](https://travis-ci.org/adhocore/php-json-fixer?branch=master)
@@ -12,7 +12,7 @@ PHP library to fix Truncated JSON data.
 
 ## Installation
 ```bash
-composer require adhocore/php-json-fixer
+composer require adhocore/json-fixer
 ```
 
 ## Usage
@@ -24,4 +24,7 @@ $json = (new Fixer)->fix('{"a":1,"b":2');
 
 $json = (new Fixer)->fix('{"a":1,"b":true,');
 // {"a":1,"b":true}
+
+$json = (new Fixer)->fix('{"b":[1,[{"b":1,"c"');
+// {"b":[1,[{"b":1,"c":true}]]}
 ```
