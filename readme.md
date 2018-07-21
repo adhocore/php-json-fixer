@@ -28,6 +28,13 @@ $json = (new Fixer)->fix('{"a":1,"b":true,');
 
 $json = (new Fixer)->fix('{"b":[1,[{"b":1,"c"');
 // {"b":[1,[{"b":1,"c":null}]]}
+
+// For batch fixing, you can just reuse same fixer instance:
+$fixer = new Fixer;
+
+$fixer->fix('...');
+$fixer->fix('...');
+// ...
 ```
 
 ## Error
