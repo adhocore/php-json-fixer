@@ -1,0 +1,41 @@
+{
+    "name": "adhocore/json-fixer",
+    "description": "Fix/repair truncated JSON data",
+    "type": "library",
+    "keywords": ["php","php-json-fixer","json","truncated-json","json-fixer","truncation-fixer","rectify-json","fix-json"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jitendra Adhikari",
+            "email": "jiten.adhikary@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ahc\\": "src/"
+        },
+        "files": []
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ahc\\Test\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+        ],
+        "test": "vendor/bin/phpunit --coverage-text --coverage-clover coverage.xml"
+    }
+}
