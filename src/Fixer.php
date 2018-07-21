@@ -61,7 +61,7 @@ class Fixer
 
         $this->reset($missingValue);
 
-        return $head . $this->doFix(\rtrim($json)) . $tail;
+        return $head . $this->doFix(\rtrim($json), $silent) . $tail;
     }
 
     public function trim($json)
