@@ -19,7 +19,7 @@ trait PadsJson
         if (!$this->inStr) {
             $tmpJson = \rtrim($tmpJson, ',');
             while ($this->lastToken() === ',') {
-                \array_pop($this->stack);
+                $this->popToken(',');
             }
         }
 
@@ -74,7 +74,7 @@ trait PadsJson
         $tmpJson .= $this->inStr ? '":' : ':';
         $tmpJson .= $this->missingValue;
         if ($this->lastToken() === '"') {
-            \array_pop($this->stack);
+            $this->popToken();
         }
 
         return $tmpJson;
