@@ -147,7 +147,7 @@ class Fixer
         $last = $this->lastToken();
 
         if (\in_array($last, [',', ':', '"']) && \preg_match('/\"|\d|\{|\[|t|f|n/', $char)) {
-            \array_pop($this->stack);
+            $this->popToken();
         }
 
         if (\in_array($char, [',', ':', '[', '{'])) {
@@ -160,6 +160,23 @@ class Fixer
     protected function lastToken()
     {
         return \end($this->stack);
+    }
+
+    protected function popToken($token = null)
+    {
+        // Last one
+        if (null === $token) {
+            return \array_pop($this->stack);
+
+        }
+
+        $keys = \array_reverse(\array_keys($this->stack));
+        foreach ($keys as $key) {
+            if ($this->stack[$key] === $token) {
+                unset($this->stack[$key]);
+                break;
+            }
+        }
     }
 
     protected function maybeStr($prev, $char, $index)
@@ -180,10 +197,12 @@ class Fixer
         if ($char === '{') {
             $this->objectPos = $index;
         } elseif ($char === '}') {
+            $this->popToken('{');
             $this->objectPos = -1;
         } elseif ($char === '[') {
             $this->arrayPos = $index;
         } elseif ($char === ']') {
+            $this->popToken('[');
             $this->arrayPos = -1;
         }
     }
@@ -202,7 +221,7 @@ class Fixer
         }
 
         throw new \RuntimeException(
-            \sprintf('Couldnt fix JSON (tried padding `%s`)', \substr($tmpJson, $length))
+            \sprintf('Could not fix JSON (tried padding `%s`)', \substr($tmpJson, $length))
         );
     }
 }
