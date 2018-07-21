@@ -132,7 +132,7 @@ class Fixer
         $this->missingValue = $missingValue;
     }
 
-    protected function doFix(string $json, $silent = false)
+    protected function doFix($json, $silent = false)
     {
         list($index, $char) = [-1, ''];
 
