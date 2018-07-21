@@ -35,6 +35,7 @@ class FixerTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertSame('{"a":false}', static::$fixer->fix('{"a', false, 'false'));
         $this->assertSame('{"a":true}', static::$fixer->fix('{"a":', false, 'true'));
+        $this->assertSame('{"a":1,"b":"missing"}', static::$fixer->fix('{"a":1,"b"', false, '"missing"'));
     }
 
     public function test_fail_silent()
@@ -128,6 +129,12 @@ class FixerTest extends \PHPUnit\Framework\TestCase
         ], [
             'json'   => '{"a":2',
             'expect' => '{"a":2}',
+        ], [
+            'json'   => '{"a":',
+            'expect' => '{"a":null}',
+        ], [
+            'json'   => '{"a"',
+            'expect' => '{"a":null}',
         ], [
             'json'   => '{"',
             'expect' => '{"":null}',
