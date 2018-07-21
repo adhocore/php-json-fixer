@@ -107,7 +107,9 @@ class Fixer
             }
         }
 
+        // @codeCoverageIgnoreStart
         return null;
+        // @codeCoverageIgnoreEnd
     }
 
     protected function reset($missingValue = 'null')

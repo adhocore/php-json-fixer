@@ -98,6 +98,8 @@ trait PadsJson
             return $string . '"';
         }
 
+        // @codeCoverageIgnoreStart
         return null;
+        // @codeCoverageIgnoreEnd
     }
 }
