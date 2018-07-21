@@ -34,7 +34,7 @@ class Fixer
     protected $arrayPos  = -1;
 
     /** @var string Missing value. (Options: true, false, null) */
-    protected $missingValue = 'true';
+    protected $missingValue = 'null';
 
     /**
      * Fix the truncated JSON.
