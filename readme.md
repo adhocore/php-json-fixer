@@ -9,6 +9,7 @@ PHP library to fix Truncated JSON data by padding contextual counterpart to the 
 [![StyleCI](https://styleci.io/repos/141589074/shield)](https://styleci.io/repos/141589074)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
+**It is a work in progress and might not cover all edge cases**
 
 ## Installation
 ```bash
@@ -26,5 +27,33 @@ $json = (new Fixer)->fix('{"a":1,"b":true,');
 // {"a":1,"b":true}
 
 $json = (new Fixer)->fix('{"b":[1,[{"b":1,"c"');
-// {"b":[1,[{"b":1,"c":true}]]}
+// {"b":[1,[{"b":1,"c":null}]]}
+```
+
+## Error
+
+If there's error and fixer cant fix the JSON for some reason, it will throw a `RunttimeException`.
+You can disable this behavior by passing silent flag (2nd param) and in such case original input is returned:
+
+```php
+(new Fixer)->fix('invalid', true);
+// 'invalid'
+```
+
+## Missing Value
+
+By default missing values are provided with `null`. You can change it by passing 3rd param to `fix()`
+
+```php
+// key b is missing value and is padded with `null`
+$json = (new Fixer)->fix('{"a":1,"b":');
+// {"a":1,"b":null}
+
+// key b is missing value and is padded with `true`
+$json = (new Fixer)->fix('{"a":1,"b":', false, 'true');
+// {"a":1,"b":true}
+
+// key b is missing value and is padded with `true`
+$json = (new Fixer)->fix('{"a":1,"b":', false, '"truncated"');
+// {"a":1,"b":"truncated"}
 ```
