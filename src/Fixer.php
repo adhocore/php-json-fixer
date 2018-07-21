@@ -84,10 +84,6 @@ class Fixer
 
     public function quickFix($json)
     {
-        if (\is_numeric($json)) {
-            return $json;
-        }
-
         if (\strlen($json) === 1 && isset($this->pairs[$json])) {
             return $json . $this->pairs[$json];
         }
