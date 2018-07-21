@@ -66,7 +66,7 @@ class Fixer
 
     public function trim($json)
     {
-        \preg_match('/^(\s+)([^\s]+)(\s+)$/', $json, $match);
+        \preg_match('/^(\s*)([^\s]+)(\s*)$/', $json, $match);
 
         $match += ['', '', \trim($json), ''];
 
