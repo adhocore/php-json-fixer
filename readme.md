@@ -39,17 +39,23 @@ $fixer->fix('...');
 
 ## Error
 
-If there's error and fixer cant fix the JSON for some reason, it will throw a `RunttimeException`.
+If there's error and fixer cant fix the JSON for some reason, it will throw a `RuntimeException`.
 You can disable this behavior by passing silent flag (2nd param) to `fix()` in which case original input is returned:
 
 ```php
-(new Fixer)->fix('invalid', true);
+(new Fixer)->silent()->fix('invalid');
 // 'invalid'
+
+(new Fixer)->silent(true)->fix('invalid');
+// 'invalid'
+
+(new Fixer)->silent(false)->fix('invalid');
+// RuntimeException
 ```
 
 ## Missing Value
 
-By default missing values are padded with `null`. You can change it by passing 3rd param to `fix()`:
+By default missing values are padded with `null`. You can change it passing desired value to `missingValue()`:
 
 ```php
 // key b is missing value and is padded with `null`
@@ -57,12 +63,16 @@ $json = (new Fixer)->fix('{"a":1,"b":');
 // {"a":1,"b":null}
 
 // key b is missing value and is padded with `true`
-$json = (new Fixer)->fix('{"a":1,"b":', false, 'true');
+$json = (new Fixer)->missingValue(true)->fix('{"a":1,"b":');
 // {"a":1,"b":true}
 
 // key b is missing value and is padded with `"truncated"`
 // Note that you can actually inject a whole new JSON subset as 3rd param
 // but that should be a valid JSON segment and is not checked by fixer.
-$json = (new Fixer)->fix('{"a":1,"b":', false, '"truncated"');
+$json = (new Fixer)->missingValue('"truncated"')->fix('{"a":1,"b":');
 // {"a":1,"b":"truncated"}
 ```
+
+## Todo
+
+- [ ] Configurable missing value as per context (options)
