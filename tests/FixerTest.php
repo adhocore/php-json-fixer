@@ -6,41 +6,45 @@ use Ahc\Json\Fixer;
 
 class FixerTest extends \PHPUnit\Framework\TestCase
 {
-    protected static $fixer;
+    protected $fixer;
 
-    public static function setUpBeforeClass()
+    public function setUp()
     {
-        static::$fixer = new Fixer;
+        $this->fixer = new Fixer;
     }
 
     /** @dataProvider theTests */
     public function test($json, $expect, $msg = null)
     {
-        $this->assertSame($expect, static::$fixer->fix($json), $msg);
+        $this->assertSame($expect, $this->fixer->fix($json), $msg);
     }
 
     public function test_invalid_literal()
     {
-        $this->assertSame('{"a" : invalid', static::$fixer->fix('{"a" : invalid', true));
-        $this->assertSame(' hmm ', static::$fixer->fix(' hmm ', true));
+        $this->fixer->silent(true);
+
+        $this->assertSame('{"a" : invalid', $this->fixer->fix('{"a" : invalid'));
+        $this->assertSame(' hmm ', $this->fixer->fix(' hmm '));
     }
 
     public function test_ws()
     {
-        $this->assertSame('{ "a"  :null}', static::$fixer->fix('{ "a"  :'));
-        $this->assertSame("\n [{}]", static::$fixer->fix("\n [{,"));
+        $this->assertSame('{ "a"  :null}', $this->fixer->missingValue(null)->fix('{ "a"  :'));
+        $this->assertSame("\n [{}]", $this->fixer->fix("\n [{,"));
     }
 
     public function test_custom_missing()
     {
-        $this->assertSame('{"a":false}', static::$fixer->fix('{"a', false, 'false'));
-        $this->assertSame('{"a":true}', static::$fixer->fix('{"a":', false, 'true'));
-        $this->assertSame('{"a":1,"b":"missing"}', static::$fixer->fix('{"a":1,"b"', false, '"missing"'));
+        $this->assertSame('{"a":false}', $this->fixer->missingValue(false)->fix('{"a'));
+        $this->assertSame('{"a":true}', $this->fixer->missingValue('true')->fix('{"a":'));
+        $this->assertSame('{"a":1,"b":"missing"}', $this->fixer->missingValue('"missing"')->fix('{"a":1,"b"'));
     }
 
     public function test_fail_silent()
     {
-        $this->assertSame('{"a"}', static::$fixer->fix('{"a"}', true));
+        $this->fixer->silent(true);
+
+        $this->assertSame('{"a"}', $this->fixer->fix('{"a"}'));
     }
 
     /**
@@ -49,7 +53,9 @@ class FixerTest extends \PHPUnit\Framework\TestCase
      */
     public function test_fail_throws()
     {
-        static::$fixer->fix('{,"a');
+        $this->fixer->silent(false);
+
+        $this->fixer->fix('{,"a');
     }
 
     public function theTests()
