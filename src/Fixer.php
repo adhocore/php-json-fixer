@@ -103,7 +103,7 @@ class Fixer
     {
         \preg_match('/^(\s*)([^\s]+)(\s*)$/', $json, $match);
 
-        $match   += ['', '', '', ''];
+        $match += ['', '', '', ''];
         $match[2] = \trim($json);
 
         \array_shift($match);
