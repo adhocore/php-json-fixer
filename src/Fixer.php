@@ -20,6 +20,9 @@ class Fixer
     /** @var bool If current char is within a string */
     protected $inStr = false;
 
+    /** @var bool Whether to throw Exception on failure */
+    protected $silent = false;
+
     /** @var array The complementary pairs */
     protected $pairs = [
         '{' => '}',
@@ -37,17 +40,49 @@ class Fixer
     protected $missingValue = 'null';
 
     /**
+     * Set/unset silent mode.
+     *
+     * @param bool $silent
+     *
+     * @return $this
+     */
+    public function silent($silent = true)
+    {
+        $this->silent = (bool) $silent;
+
+        return $this;
+    }
+
+    /**
+     * Set missing value.
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function missingValue($value)
+    {
+        if ($value === null) {
+            $value = 'null';
+        } elseif (\is_bool($value)) {
+            $value = $value ? 'true' : 'false';
+        }
+
+        $this->missingValue = $value;
+
+        return $this;
+    }
+
+    /**
      * Fix the truncated JSON.
      *
-     * @param string $json         The JSON string to fix.
-     * @param bool   $silent       If silent, doesnt throw when fixing fails.
-     * @param string $missingValue Missing value constructor. (Options: true, false, null).
+     * @param string $json The JSON string to fix.
      *
      * @throws \RuntimeExcaption When fixing fails.
      *
      * @return string Fixed JSON. If failed with silent then original JSON.
      */
-    public function fix($json, $silent = false, $missingValue = 'null')
+    public function fix($json)
     {
         list($head, $json, $tail) = $this->trim($json);
 
@@ -59,16 +94,17 @@ class Fixer
             return $tmpJson;
         }
 
-        $this->reset($missingValue);
+        $this->reset();
 
-        return $head . $this->doFix(\rtrim($json), $silent) . $tail;
+        return $head . $this->doFix($json) . $tail;
     }
 
     protected function trim($json)
     {
         \preg_match('/^(\s*)([^\s]+)(\s*)$/', $json, $match);
 
-        $match += ['', '', \trim($json), ''];
+        $match   += ['', '', '', ''];
+        $match[2] = \trim($json);
 
         \array_shift($match);
 
@@ -95,6 +131,14 @@ class Fixer
         return $this->padString($json);
     }
 
+    protected function reset()
+    {
+        $this->stack     = [];
+        $this->inStr     = false;
+        $this->objectPos = -1;
+        $this->arrayPos  = -1;
+    }
+
     protected function maybeLiteral($json)
     {
         if (!\in_array($json[0], ['t', 'f', 'n'])) {
@@ -112,18 +156,7 @@ class Fixer
         // @codeCoverageIgnoreEnd
     }
 
-    protected function reset($missingValue = 'null')
-    {
-        $this->stack = [];
-        $this->inStr = false;
-
-        $this->objectPos = -1;
-        $this->arrayPos  = -1;
-
-        $this->missingValue = $missingValue;
-    }
-
-    protected function doFix($json, $silent = false)
+    protected function doFix($json)
     {
         list($index, $char) = [-1, ''];
 
@@ -137,7 +170,7 @@ class Fixer
             }
         }
 
-        return $this->fixOrFail($json, $silent);
+        return $this->fixOrFail($json);
     }
 
     protected function stack($prev, $char, $index, $next)
@@ -208,7 +241,7 @@ class Fixer
         }
     }
 
-    protected function fixOrFail($json, $silent)
+    protected function fixOrFail($json)
     {
         $length  = \strlen($json);
         $tmpJson = $this->pad($json);
@@ -217,7 +250,7 @@ class Fixer
             return $tmpJson;
         }
 
-        if ($silent) {
+        if ($this->silent) {
             return $json;
         }
 
