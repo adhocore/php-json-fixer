@@ -17,7 +17,7 @@ class FixerTest extends \PHPUnit\Framework\TestCase
 {
     protected $fixer;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->fixer = new Fixer;
     }
