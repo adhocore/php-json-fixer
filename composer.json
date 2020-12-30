@@ -12,13 +12,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "Ahc\\": "src/"
+            "Ahc\\Json\\": "src/"
         },
         "files": []
     },
     "autoload-dev": {
         "psr-4": {
-            "Ahc\\Test\\": "tests/"
+            "Ahc\\Test\\Json\\": "tests/"
         }
     },
     "require": {
