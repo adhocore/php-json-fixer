@@ -8,6 +8,9 @@ PHP library to fix Truncated JSON data by padding contextual counterpart to the 
 [![Codecov branch](https://img.shields.io/codecov/c/github/adhocore/php-json-fixer/master.svg?style=flat-square)](https://codecov.io/gh/adhocore/php-json-fixer)
 [![StyleCI](https://styleci.io/repos/141589074/shield)](https://styleci.io/repos/141589074)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+[![Donate](https://img.shields.io/badge/donate-paypal-blue.svg?style=flat-square)](https://www.paypal.me/ji10/50usd)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Rescue+and+fix+truncated+JSON+data+in+PHP&url=https://github.com/adhocore/php-json-fixer&hashtags=php,json,jsonfixer,fixjson)
+
 
 **It is a work in progress and might not cover all edge cases.** It would be great if you try it out, open some issues or contribute.
 
