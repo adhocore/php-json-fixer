@@ -44,7 +44,7 @@ trait PadsJson
             return $tmpJson;
         }
 
-        $match = \preg_match('/(tr?u?e?|fa?l?s?e|nu?l?l?)$/', $tmpJson, $matches);
+        $match = \preg_match('/(tr?u?e?|fa?l?s?e?|nu?l?l?)$/', $tmpJson, $matches);
 
         if (!$match || null === $literal = $this->maybeLiteral($matches[1])) {
             return $tmpJson;
