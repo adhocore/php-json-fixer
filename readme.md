@@ -13,6 +13,7 @@ PHP library to fix Truncated JSON data by padding contextual counterpart to the 
 [![Donate 50](https://img.shields.io/badge/donate-paypal-blue.svg?style=flat-square&label=donate+50)](https://www.paypal.me/ji10/50usd)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Rescue+and+fix+truncated+JSON+data+in+PHP&url=https://github.com/adhocore/php-json-fixer&hashtags=php,json,jsonfixer,fixjson)
 
+- Zero dependency (no vendor bloat).
 
 **It is a work in progress and might not cover all edge cases.** It would be great if you try it out, open some issues or contribute.
 
