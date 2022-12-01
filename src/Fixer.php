@@ -87,7 +87,7 @@ class Fixer
      *
      * @param string $json The JSON string to fix.
      *
-     * @throws \RuntimeExcaption When fixing fails.
+     * @throws \RuntimeException When fixing fails.
      *
      * @return string Fixed JSON. If failed with silent then original JSON.
      */

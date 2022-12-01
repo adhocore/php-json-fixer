@@ -55,7 +55,7 @@ trait PadsJson
 
     protected function padStack($tmpJson)
     {
-        foreach (\array_reverse($this->stack, true) as $index => $token) {
+        foreach (\array_reverse($this->stack, true) as $token) {
             if (isset($this->pairs[$token])) {
                 $tmpJson .= $this->pairs[$token];
             }
