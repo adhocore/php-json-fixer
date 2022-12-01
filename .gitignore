@@ -7,3 +7,4 @@ composer.lock
 coverage.xml
 clover.xml
 *.local.*
+.phpunit.result.cache

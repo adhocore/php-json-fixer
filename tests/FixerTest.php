@@ -15,56 +15,45 @@ use Ahc\Json\Fixer;
 
 class FixerTest extends \PHPUnit\Framework\TestCase
 {
-    protected $fixer;
-
-    protected function setUp()
-    {
-        $this->fixer = new Fixer;
-    }
-
     /** @dataProvider theTests */
-    public function test($json, $expect, $msg = null)
+    public function test($json, $expect, $msg = '')
     {
-        $this->assertSame($expect, $this->fixer->fix($json), $msg);
+        $this->assertSame($expect, (new Fixer())->fix($json), $msg);
     }
 
     public function test_invalid_literal()
     {
-        $this->fixer->silent(true);
+        $fixer = (new Fixer())->silent(true);
 
-        $this->assertSame('{"a" : invalid', $this->fixer->fix('{"a" : invalid'));
-        $this->assertSame(' hmm ', $this->fixer->fix(' hmm '));
+        $this->assertSame('{"a" : invalid', $fixer->fix('{"a" : invalid'));
+        $this->assertSame(' hmm ', $fixer->fix(' hmm '));
     }
 
     public function test_ws()
     {
-        $this->assertSame('{ "a"  :null}', $this->fixer->missingValue(null)->fix('{ "a"  :'));
-        $this->assertSame("\n [{}]", $this->fixer->fix("\n [{,"));
+        $this->assertSame('{ "a"  :null}', (new Fixer())->missingValue(null)->fix('{ "a"  :'));
+        $this->assertSame("\n [{}]", (new Fixer())->fix("\n [{,"));
     }
 
     public function test_custom_missing()
     {
-        $this->assertSame('{"a":false}', $this->fixer->missingValue(false)->fix('{"a'));
-        $this->assertSame('{"a":true}', $this->fixer->missingValue('true')->fix('{"a":'));
-        $this->assertSame('{"a":1,"b":"missing"}', $this->fixer->missingValue('"missing"')->fix('{"a":1,"b"'));
+        $fixer = new Fixer();
+        $this->assertSame('{"a":false}', $fixer->missingValue(false)->fix('{"a'));
+        $this->assertSame('{"a":true}', $fixer->missingValue('true')->fix('{"a":'));
+        $this->assertSame('{"a":1,"b":"missing"}', $fixer->missingValue('"missing"')->fix('{"a":1,"b"'));
     }
 
     public function test_fail_silent()
     {
-        $this->fixer->silent(true);
-
-        $this->assertSame('{"a"}', $this->fixer->fix('{"a"}'));
+        $this->assertSame('{"a"}', (new Fixer())->silent(true)->fix('{"a"}'));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Could not fix JSON
-     */
     public function test_fail_throws()
     {
-        $this->fixer->silent(false);
+        $this->expectException('\RuntimeException');
+        $this->expectExceptionMessage('Could not fix JSON');
 
-        $this->fixer->fix('{,"a');
+        (new Fixer())->silent(false)->fix('{,"a');
     }
 
     public function theTests()
