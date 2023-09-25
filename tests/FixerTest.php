@@ -160,6 +160,9 @@ class FixerTest extends \PHPUnit\Framework\TestCase
         ], [
             'json'   => '[ {"id":1, "data": []}, {"id":2, "data": [',
             'expect' => '[ {"id":1, "data": []}, {"id":2, "data": []}]',
+        ], [
+            'json'   => '[ {"id":1, "data": []}, {"id":2, "data": "bla,',
+            'expect' => '[ {"id":1, "data": []}, {"id":2, "data": "bla,"}]',
         ],
         ];
     }

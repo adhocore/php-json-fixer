@@ -71,7 +71,7 @@ trait PadsJson
         }
 
         $part = \substr($tmpJson, $this->objectPos + 1);
-        if (\preg_match('/(\s*\"[^"]+\"\s*:\s*[^,]+,?)+$/', $part, $matches)) {
+        if (\preg_match('/(\s*\"[^"]+\"\s*:\s*([^,]+|\"(?:.(?!(?<![\\\\])"))*.?"?),?)+$/', $part, $matches)) {
             return $tmpJson;
         }
 
