@@ -152,6 +152,21 @@ class FixerTest extends \PHPUnit\Framework\TestCase
             'json'   => '{"a":[',
             'expect' => '{"a":[]}',
         ], [
+            'json'   => '{"a":{',
+            'expect' => '{"a":{}}',
+        ], [
+            'json'   => '{"a":{"b":"a"}',
+            'expect' => '{"a":{"b":"a"}}',
+        ], [
+            'json'   => '{"a":{"b":"a"',
+            'expect' => '{"a":{"b":"a"}}',
+        ], [
+            'json'   => '{"a":{"b":1',
+            'expect' => '{"a":{"b":1}}',
+        ], [
+            'json'   => '{"a":{"b":1}',
+            'expect' => '{"a":{"b":1}}',
+        ], [
             'json'   => '{"a":"b","b":["',
             'expect' => '{"a":"b","b":[""]}',
         ], [
